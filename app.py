@@ -1,26 +1,28 @@
 import streamlit as st
-from duckduckgo_search import DDGS
+from googleapiclient.discovery import build
 
-st.set_page_config(page_title="CrediCheck", page_icon="🔍")
-st.title("🔍 CrediCheck: 실시간 팩트체크 분석기")
+st.title("🔍 구글 팩트체크 분석기")
 
-user_input = st.text_area("검증할 내용을 입력하세요:", height=200)
+# 본인의 키를 여기 복사해서 넣으세요
+API_KEY = "AIzaSyDYX-It7NiJ-pRVEYY0J-R4KWsTHBb_5P4"
+CX = "542df9d8f19064b62"
 
-if st.button("실시간 검증 시작"):
+user_input = st.text_input("검증할 내용을 입력하세요:")
+
+if st.button("검색"):
     if user_input:
-        with st.spinner("웹에서 관련 자료를 검색하고 분석 중입니다..."):
-            # region='kr-kr'을 추가하여 한국어 결과를 우선 검색하도록 설정합니다.
-            with DDGS() as ddgs:
-                results = list(ddgs.text(user_input, region='kr-kr', safesearch='moderate', max_results=3))
+        try:
+            # 구글 검색 서비스 연결
+            service = build("customsearch", "v1", developerKey=API_KEY)
+            res = service.cse().list(q=user_input, cx=CX).execute()
             
-            st.success("검색 완료! 관련 정보입니다:")
-            
-            if results:
-                for i, res in enumerate(results):
-                    st.write(f"**[참고 자료 {i+1}]** {res['title']}")
-                    st.write(f"내용: {res['body']}")
-                    st.write(f"링크: {res['href']}")
+            # 검색 결과 출력
+            if 'items' in res:
+                for item in res['items'][:3]:
+                    st.write(f"### {item['title']}")
+                    st.write(item['snippet'])
+                    st.write(f"링크: {item['link']}")
             else:
-                st.write("관련 자료를 찾을 수 없습니다.")
-    else:
-        st.warning("내용을 입력해주세요.")
+                st.write("관련된 검색 결과가 없습니다.")
+        except Exception as e:
+            st.write(f"오류 발생: {e}")
