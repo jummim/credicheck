@@ -1,3 +1,5 @@
+import streamlit as st
+
 # 50+ 감정 데이터베이스 (위험 상황 포함)
 emotion_data = {
     "극심한고통": {
