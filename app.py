@@ -1,9 +1,9 @@
 import streamlit as st
 import random
 
-st.title("🎯 취향 저격 완벽 메뉴 결정 비서 v21.0 (6개 카테고리 재편성)")
+st.title("🎯 취향 저격 완벽 메뉴 결정 비서 v21.0 (6개 카테고리 최종본)")
 
-# '기타'를 삭제하고 각 항목을 6개 카테고리에 맞게 재배치
+# 6개 카테고리로 정리된 최종 메뉴 데이터베이스
 menu_db = {
     "한식": {
         ("있음", "매움"): ["김치찌개", "순두부찌개", "부대찌개", "육개장", "닭볶음탕", "짬뽕순두부", "고추장찌개", "알탕", "매운갈비찜", "닭개장", "해물탕", "아구찜(국물)", "낙지전골", "매운탕"],
@@ -43,10 +43,12 @@ menu_db = {
     }
 }
 
+# UI 구성
 cat = st.selectbox("카테고리", list(menu_db.keys()))
 soup = st.radio("국물 유무", ["있음", "없음"])
 spicy = st.radio("매운맛", ["매움", "안매움"])
 
+# 결과 출력
 if st.button("내 취향 메뉴 추천받기 🎲"):
     target_menu = menu_db[cat].get((soup, spicy), [])
     if target_menu:
