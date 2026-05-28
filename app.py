@@ -3,9 +3,14 @@ from googleapiclient.discovery import build
 
 st.title("🔍 구글 팩트체크 분석기")
 
-# 본인의 키를 여기 복사해서 넣으세요
-API_KEY = "AIzaSyDYX-It7NiJ-pRVEYY0J-R4KWsTHBb_5P4"
-CX = "542df9d8f19064b62"
+# Streamlit Cloud의 Secrets에서 키를 안전하게 불러옵니다.
+# 로컬에서 테스트할 때는 코드 하단에 설명을 참고하세요!
+try:
+    API_KEY = st.secrets["API_KEY"]
+    CX = st.secrets["CX"]
+except:
+    st.error("API 키가 설정되지 않았습니다. Streamlit Secrets 설정을 확인하세요.")
+    st.stop()
 
 user_input = st.text_input("검증할 내용을 입력하세요:")
 
