@@ -1,7 +1,7 @@
 import streamlit as st
 import random
 
-st.title("🎯 취향 저격 완벽 메뉴 결정 비서 v21.0 (6개 카테고리 재편성)")
+st.title("🎯 취향 저격 완벽 메뉴 결정 비서 v21.0 ")
 
 # '기타'를 삭제하고 각 항목을 6개 카테고리에 맞게 재배치
 menu_db = {
