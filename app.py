@@ -1,43 +1,38 @@
 import streamlit as st
-from googleapiclient.discovery import build
+import random
 
-# 페이지 설정
-st.set_page_config(page_title="우리 동네 축제 찾기")
-st.title("🎉 우리 동네 축제 찾기")
+st.title("🍽️ 한국인의 모든 메뉴 결정 비서")
 
-# 본인의 API KEY와 CX(검색 엔진 ID)를 입력하세요
-API_KEY = "AIzaSyDYX-It7NiJ-pRVEYY0J-R4KWsTHBb_5P4"
-CX = "542df9d8f19064b62"
+# 카테고리별 초대형 메뉴 데이터베이스
+menu_db = {
+    "집밥/한식": ["김치찌개", "된장찌개", "순두부찌개", "청국장", "제육볶음", "불고기", "비빔밥", "고등어조림", "갈치조림", "미역국", "콩나물국밥", "닭볶음탕", "김치볶음밥", "간장계란밥", "잡채"],
+    "면요리": ["짜장면", "짬뽕", "우동", "메밀소바", "냉면", "칼국수", "수제비", "잔치국수", "비빔국수", "콩국수", "라멘", "파스타", "쌀국수", "팟타이", "마제소바"],
+    "분식/간편식": ["떡볶이", "튀김", "순대", "김밥", "라면", "토스트", "샌드위치", "햄버거", "핫도그", "피자", "닭강정", "유부초밥", "쫄면"],
+    "고기/구이": ["삼겹살", "목살", "돼지갈비", "차돌박이", "대패삼겹살", "소갈비", "곱창", "막창", "껍데기", "닭갈비", "스테이크", "훈제오리"],
+    "일식/중식/기타": ["돈가스", "초밥", "회덮밥", "규동", "카레라이스", "오므라이스", "꿔바로우", "마라탕", "마라샹궈", "샤브샤브", "텐동"],
+    "특별한 날": ["한정식 코스", "회 정식", "장어구이", "찜닭", "해물탕", "아구찜", "보쌈", "족발", "양꼬치"]
+}
 
-# 사용자 입력
-region = st.text_input("축제를 찾고 싶은 지역을 입력하세요 (예: 서울, 제주, 부산):")
+# 사용자 선택
+category = st.selectbox("오늘의 카테고리를 골라보세요!", list(menu_db.keys()))
 
-# 검색 버튼
-if st.button("축제 검색"):
-    if region:
-        try:
-            # 구글 커스텀 검색 서비스 연결
-            service = build("customsearch", "v1", developerKey=API_KEY)
-            
-            # 검색어 설정 (지역 + 축제 키워드)
-            query = f"{region} 지역 축제 행사 일정"
-            
-            # 검색 실행 (한국어, 한국 지역 결과)
-            res = service.cse().list(q=query, cx=CX, lr="lang_ko", gl="kr").execute()
-            
-            # 결과 출력
-            if 'items' in res:
-                st.subheader(f"'{region}' 지역 축제 검색 결과")
-                for item in res['items'][:5]: # 상위 5개만 출력
-                    st.write(f"### {item['title']}")
-                    st.write(item['snippet'])
-                    st.link_button("상세 정보 보기", item['link'])
-                    st.divider()
-            else:
-                st.info("해당 지역의 축제 정보를 찾을 수 없습니다. 지역명을 다시 확인해 보세요!")
-        
-        except Exception as e:
-            st.error(f"오류가 발생했습니다: {e}")
-            st.write("Tip: API 키나 CX가 정확한지, 혹은 할당량이 남았는지 확인해 주세요.")
-    else:
-        st.warning("지역명을 입력해주세요!")
+if st.button("메뉴 확정하기 🎲"):
+    # 선택된 카테고리에서 무작위 추출
+    recommendation = random.choice(menu_db[category])
+    
+    st.success(f"당신의 오늘 선택은... **[{recommendation}]** 입니다!")
+    
+    # 더 재미있는 메시지 추가
+    msg = random.choice([
+        "탁월한 선택입니다! 맛있게 드세요.",
+        "오늘따라 유난히 더 맛있을 메뉴네요!",
+        "고민 해결! 바로 배달 앱을 켜보세요.",
+        "혹시 맛집을 아신다면 오늘 꼭 가보세요!"
+    ])
+    st.info(msg)
+    st.balloons()
+
+# 확장 기능: 사용자가 추가한 메뉴를 기억하진 않지만(휘발성), 즉석에서 확인 가능
+st.write("---")
+with st.expander("메뉴판 확인하기"):
+    st.write(menu_db)
