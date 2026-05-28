@@ -36,3 +36,5 @@ if st.button("검색"):
             st.error(f"오류가 발생했습니다: {e}")
     else:
         st.warning("검색어를 입력해주세요!")
+    else:
+        st.warning("검색어를 입력해주세요!")
