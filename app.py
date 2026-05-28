@@ -5,7 +5,6 @@ from googleapiclient.discovery import build
 st.title("🔍 구글 팩트체크 분석기")
 
 # 본인의 API KEY와 CX(검색 엔진 ID)를 직접 입력합니다.
-# (이 코드를 안전한 곳에 보관하세요!)
 API_KEY = "AIzaSyDYX-It7NiJ-pRVEYY0J-R4KWsTHBb_5P4"
 CX = "542df9d8f19064b62"
 
@@ -19,7 +18,7 @@ if st.button("검색"):
             # 구글 검색 서비스 연결
             service = build("customsearch", "v1", developerKey=API_KEY)
             
-            # 검색 결과 요청 (한국어 결과, 한국 지역 설정)
+            # 검색 결과 요청
             res = service.cse().list(q=user_input, cx=CX, lr="lang_ko", gl="kr").execute()
             
             # 검색 결과 출력
@@ -29,12 +28,10 @@ if st.button("검색"):
                     st.write(f"### {item['title']}")
                     st.write(item['snippet'])
                     st.write(f"링크: {item['link']}")
-                    st.divider() # 결과 사이에 구분선 추가
+                    st.divider()
             else:
                 st.write("관련된 검색 결과가 없습니다.")
         except Exception as e:
             st.error(f"오류가 발생했습니다: {e}")
-    else:
-        st.warning("검색어를 입력해주세요!")
     else:
         st.warning("검색어를 입력해주세요!")
