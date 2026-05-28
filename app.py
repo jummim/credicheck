@@ -1,31 +1,33 @@
 import streamlit as st
 
-# 페이지 설정
 st.set_page_config(page_title="CrediCheck", page_icon="🔍")
 st.title("🔍 CrediCheck: 온라인 정보 신뢰도 분석기")
-st.subheader("정보의 링크나 텍스트를 입력하면 신뢰도를 분석해 드립니다.")
 
-# 사용자 입력
-user_input = st.text_area("분석할 텍스트나 기사 내용을 입력하세요:", height=200)
+user_input = st.text_area("분석할 내용을 입력하세요:", height=200)
 
 if st.button("분석 시작"):
     if user_input:
         with st.spinner("정보의 신뢰도를 분석 중입니다..."):
-            # 분석 로직 (시연을 위한 예시 결과값)
-            # 실제 서비스 시에는 여기에 AI 분석 로직이 들어갑니다.
-            st.success("분석 결과")
-            st.write("### [종합 신뢰도 점수: 78/100]")
+            # 감정적 키워드 감지 로직
+            bad_words = ["기적", "100%", "무조건", "절대", "즉시"]
+            score = 85  # 기본 점수
             
-            # 4대 지표 시각화
-            col1, col2 = st.columns(2)
-            with col1:
-                st.write("- **출처 객관성:** 8/10")
-                st.write("- **데이터 일관성:** 9/10")
-            with col2:
-                st.write("- **감정적 편향성:** 5/10")
-                st.write("- **근거 최신성:** 7/10")
+            # 자극적인 단어가 많으면 점수 하락
+            for word in bad_words:
+                if word in user_input:
+                    score -= 10
             
-            st.write("---")
+            st.success("분석 완료!")
+            st.write(f"### [종합 신뢰도 점수: {score}/100]")
+            
+            if score >= 80:
+                st.info("✅ 매우 신뢰할 수 있는 정보입니다.")
+            elif score >= 60:
+                st.warning("⚠️ 중립적인 정보입니다. 출처를 한 번 더 확인하세요.")
+            else:
+                st.error("❌ 신뢰도가 매우 낮습니다. 과장된 광고성 정보일 수 있습니다.")
+    else:
+        st.warning("분석할 내용을 먼저 입력해주세요.")
             st.write("**분석 요약:** 해당 정보는 공신력 있는 기관의 데이터를 인용하고 있어 논리적으로 안정적이나, 감정적인 단어가 일부 포함되어 있어 중립적 판단이 필요합니다.")
     else:
         st.warning("분석할 내용을 먼저 입력해주세요.")
