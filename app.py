@@ -3,13 +3,9 @@ from googleapiclient.discovery import build
 
 st.title("🔍 구글 팩트체크 분석기")
 
-# Streamlit Cloud의 Secrets에서 키를 안전하게 불러옵니다.
-try:
-    API_KEY = st.secrets["API_KEY"]
-    CX = st.secrets["CX"]
-except:
-    st.error("API 키가 설정되지 않았습니다. Streamlit Secrets 설정을 확인하세요.")
-    st.stop()
+# 보안 설정(Secrets) 대신 키를 코드에 직접 넣습니다.
+API_KEY = "AIzaSyDYX-It7NiJ-pRVEYY0J-R4KWsTHBb_5P4"
+CX = "542df9d8f19064b62"
 
 user_input = st.text_input("검증할 내용을 입력하세요:")
 
@@ -19,7 +15,7 @@ if st.button("검색"):
             # 구글 검색 서비스 연결
             service = build("customsearch", "v1", developerKey=API_KEY)
             
-            # 검색 결과 요청 (lr="lang_ko", gl="kr" 옵션을 추가하여 한국어 결과만 가져옵니다)
+            # 검색 결과 요청
             res = service.cse().list(q=user_input, cx=CX, lr="lang_ko", gl="kr").execute()
             
             # 검색 결과 출력
