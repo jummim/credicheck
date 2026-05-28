@@ -7,7 +7,7 @@ st.title("🎉 우리 동네 축제 찾기")
 
 # 본인의 API KEY와 CX(검색 엔진 ID)를 입력하세요
 API_KEY = "AIzaSyDYX-It7NiJ-pRVEYY0J-R4KWsTHBb_5P4"
-CX = "cx=542df9d8f19064b62"
+CX = "542df9d8f19064b62"
 
 # 사용자 입력
 region = st.text_input("축제를 찾고 싶은 지역을 입력하세요 (예: 서울, 제주, 부산):")
