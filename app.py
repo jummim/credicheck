@@ -8,11 +8,9 @@ user_input = st.text_area("분석할 내용을 입력하세요:", height=200)
 if st.button("분석 시작"):
     if user_input:
         with st.spinner("정보의 신뢰도를 분석 중입니다..."):
-            # 감정적 키워드 감지 로직
             bad_words = ["기적", "100%", "무조건", "절대", "즉시"]
-            score = 85  # 기본 점수
+            score = 85
             
-            # 자극적인 단어가 많으면 점수 하락
             for word in bad_words:
                 if word in user_input:
                     score -= 10
