@@ -1,2 +1,2 @@
 streamlit
-duckduckgo_search
+google-api-python-client
